@@ -1,24 +1,23 @@
 import { ThemedIcon } from "@/components/themed-icon";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
-import { Colors } from "@/constants/theme";
+import { useTheme } from "@/hooks/use-theme";
 import { LogIn, LogOut, User } from "lucide-react-native";
 import { useState } from "react";
-import { Pressable, StyleSheet, useColorScheme, View } from "react-native";
+import { Pressable, StyleSheet, TouchableOpacity } from "react-native";
 
 export function UserProfile() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
+  const theme = useTheme();
 
   const [visible, setVisible] = useState(false);
 
   return (
-    <View>
+    <ThemedView>
       <Pressable
         onPress={() => setVisible((prev) => !prev)}
         style={[
           styles.profileButton,
-          { backgroundColor: colors.backgroundElement },
+          { backgroundColor: theme.backgroundElement },
         ]}
       >
         <ThemedIcon icon={User} size={21} type="textSecondary" />
@@ -29,39 +28,38 @@ export function UserProfile() {
           style={[
             styles.dropdown,
             {
-              backgroundColor: colors.backgroundElement,
-              borderColor: colors.border,
+              backgroundColor: theme.backgroundElement,
+              borderColor: theme.border,
             },
           ]}
         >
-          <Pressable
+          <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={({ pressed }) => [
+            style={[
               styles.dropdownItem,
-              pressed && {
-                backgroundColor: colors.backgroundSelected,
+              {
+                backgroundColor: theme.backgroundElement,
               },
             ]}
           >
             <ThemedIcon icon={LogIn} size={18} type="textSecondary" />
             <ThemedText>Sign In</ThemedText>
-          </Pressable>
+          </TouchableOpacity>
 
-          <Pressable
+          <TouchableOpacity
             onPress={() => setVisible(false)}
-            style={({ pressed }) => [
+            style={[
               styles.dropdownItem,
-              pressed && {
-                backgroundColor: colors.backgroundSelected,
-              },
+
+              { backgroundColor: theme.backgroundElement },
             ]}
           >
             <ThemedIcon icon={LogOut} size={18} type="textSecondary" />
             <ThemedText>Sign Out</ThemedText>
-          </Pressable>
+          </TouchableOpacity>
         </ThemedView>
       )}
-    </View>
+    </ThemedView>
   );
 }
 
@@ -84,7 +82,7 @@ const styles = StyleSheet.create({
     paddingVertical: 6,
     zIndex: 100,
     elevation: 5,
-    left:5
+    left: 5,
   },
 
   dropdownItem: {

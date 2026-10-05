@@ -17,7 +17,7 @@ export default function Products() {
     fetchProducts();
   }, []);
   return (
-    <ThemedView style={{ flex: 1,  }}>
+    <ThemedView style={{ flex: 1}}>
       <FlatList
         data={products}
         numColumns={2}

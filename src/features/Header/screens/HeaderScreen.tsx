@@ -1,13 +1,12 @@
 import { ThemedIcon } from "@/components/themed-icon";
 import { ThemedView } from "@/components/themed-view";
-import { Colors } from "@/constants/theme";
+import { useTheme } from "@/hooks/use-theme";
 import { Search } from "lucide-react-native";
-import { StyleSheet, TextInput, useColorScheme } from "react-native";
+import { StyleSheet, TextInput } from "react-native";
 import { UserProfile } from "../components/User";
 
 export function HeaderScreen() {
-  const colorScheme = useColorScheme();
-  const colors = Colors[colorScheme === "dark" ? "dark" : "light"];
+  const theme = useTheme();
 
   return (
     <ThemedView style={styles.container}>
@@ -16,8 +15,8 @@ export function HeaderScreen() {
         style={[
           styles.searchContainer,
           {
-            backgroundColor: colors.backgroundElement,
-            borderColor: colors.border,
+            backgroundColor: theme.backgroundElement,
+            borderColor: theme.border,
           },
         ]}
       >
@@ -25,8 +24,8 @@ export function HeaderScreen() {
 
         <TextInput
           placeholder="Search products or categories"
-          placeholderTextColor={colors.textSecondary}
-          style={[styles.input, { color: colors.text }]}
+          placeholderTextColor={theme.textSecondary}
+          style={[styles.input,{color:theme.text}]}
         />
       </ThemedView>
     </ThemedView>
@@ -39,7 +38,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 10,
     paddingRight: 20,
-
   },
 
   profileButton: {
