@@ -1,3 +1,4 @@
+import { DataContextProvider } from "@/hooks/contextApi";
 import { useFonts } from "expo-font";
 import { DarkTheme, DefaultTheme, Stack, ThemeProvider } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
@@ -35,10 +36,12 @@ export default function TabLayout() {
   }
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="(tabs)" />
-        <Stack.Screen name="(products)" />
-      </Stack>
+      <DataContextProvider>
+        <Stack screenOptions={{ headerShown: false }}>
+          <Stack.Screen name="(tabs)" />
+          <Stack.Screen name="(products)" />
+        </Stack>
+      </DataContextProvider>
     </ThemeProvider>
   );
 }

@@ -1,12 +1,20 @@
 import { ThemedIcon } from "@/components/themed-icon";
 import { ThemedView } from "@/components/themed-view";
+import { UseDataContext } from "@/hooks/contextApi";
 import { useTheme } from "@/hooks/use-theme";
 import { Search } from "lucide-react-native";
+import { useState } from "react";
 import { StyleSheet, TextInput } from "react-native";
 import { UserProfile } from "../components/User";
 
 export function HeaderScreen() {
   const theme = useTheme();
+  const { setSearchText } = UseDataContext();
+  const [text, setText] = useState<string>("");
+
+  function searchItem() {
+    setSearchText(text);
+  }
 
   return (
     <ThemedView style={styles.container}>
@@ -23,9 +31,13 @@ export function HeaderScreen() {
         <ThemedIcon icon={Search} size={19} type="textSecondary" />
 
         <TextInput
+          value={text}
+          onChangeText={setText}
+          onSubmitEditing={searchItem}
+          returnKeyType="search"
           placeholder="Search products or categories"
           placeholderTextColor={theme.textSecondary}
-          style={[styles.input,{color:theme.text}]}
+          style={[styles.input, { color: theme.text }]}
         />
       </ThemedView>
     </ThemedView>
