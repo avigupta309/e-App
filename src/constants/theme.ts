@@ -32,6 +32,7 @@ export const Colors = {
     rating: "#F59E0B",
 
     overlay: "rgba(15, 23, 42, 0.08)",
+    white: "#F8FAFC",
   },
 
   dark: {
@@ -59,6 +60,7 @@ export const Colors = {
     rating: "#FBBF24",
 
     overlay: "rgba(0, 0, 0, 0.25)",
+    white: "#F8FAFC",
   },
 } as const;
 

@@ -1,3 +1,4 @@
+import LoadingAnimated from "@/components/loading";
 import { ThemedIcon } from "@/components/themed-icon";
 import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
@@ -11,16 +12,10 @@ import axios from "axios";
 import { useLocalSearchParams } from "expo-router";
 import { Ruler } from "lucide-react-native";
 import { useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Image,
-  Pressable,
-  ScrollView,
-  StyleSheet,
-} from "react-native";
+import { Image, Pressable, ScrollView, StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 export default function Info() {
   const { id } = useLocalSearchParams<{ id: string }>();
-  console.log("Product Id : : ", id);
   const theme = useTheme();
 
   const [product, setProduct] = useState<productsProps | null>(null);
@@ -44,86 +39,86 @@ export default function Info() {
   }, [id]);
 
   if (!product) {
-    return (
-      <ThemedView style={styles.loading}>
-        <ActivityIndicator size="large" color={theme.primary} />
-
-        <ThemedText
-          themeColor="textSecondary"
-          style={[
-            styles.loadingText,
-            {
-              fontFamily: Font.Medium,
-            },
-          ]}
-        >
-          Loading product...
-        </ThemedText>
-      </ThemedView>
-    );
+    return <LoadingAnimated />;
   }
 
   return (
-    <ScrollView
-      showsVerticalScrollIndicator={false}
-      contentContainerStyle={styles.container}
-    >
-      <ThemedView
-        style={[
-          styles.imageContainer,
-          {
-            backgroundColor: theme.background,
-            borderColor: theme.border,
-          },
-        ]}
-      >
-        <Image
-          source={{ uri: selectedImage }}
-          style={[
-            styles.mainImage,
-            [
-              {
-                // backgroundColor:theme.background
-              },
-            ],
-          ]}
-          resizeMode="contain"
-        />
-      </ThemedView>
-
+    <SafeAreaView>
       <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.thumbnailContainer}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.container}
       >
-        {product.images?.map((image, index) => (
-          <Pressable
-            key={index}
-            onPress={() => setSelectedImage(image)}
-            style={[
-              styles.thumbnail,
-              {
-                backgroundColor: theme.backgroundElement,
-                borderColor:
-                  selectedImage === image ? theme.primary : theme.border,
-              },
-            ]}
-          >
-            <Image
-              source={{ uri: image }}
-              style={styles.thumbnailImage}
-              resizeMode="contain"
-            />
-          </Pressable>
-        ))}
-      </ScrollView>
+        <ThemedView
+          style={[
+            styles.imageContainer,
+            {
+              backgroundColor: theme.background,
+              borderColor: theme.border,
+            },
+          ]}
+        >
+          <Image
+            source={{ uri: selectedImage }}
+            style={[styles.mainImage]}
+            resizeMode="contain"
+          />
+        </ThemedView>
 
-      <ProductInfo product={product} />
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          contentContainerStyle={styles.thumbnailContainer}
+        >
+          {product.images?.map((image, index) => (
+            <Pressable
+              key={index}
+              onPress={() => setSelectedImage(image)}
+              style={[
+                styles.thumbnail,
+                {
+                  backgroundColor: theme.backgroundElement,
+                  borderColor:
+                    selectedImage === image ? theme.primary : theme.border,
+                },
+              ]}
+            >
+              <Image
+                source={{ uri: image }}
+                style={styles.thumbnailImage}
+                resizeMode="contain"
+              />
+            </Pressable>
+          ))}
+        </ScrollView>
 
-      <ThemedView style={styles.section}>
-        <ThemedView style={styles.sectionHeader}>
-          <ThemedIcon icon={Ruler} size={20} type="text" />
+        <ProductInfo product={product} />
 
+        <ThemedView style={styles.section}>
+          <ThemedView style={styles.sectionHeader}>
+            <ThemedIcon icon={Ruler} size={20} type="text" />
+
+            <ThemedText
+              style={[
+                styles.sectionTitle,
+                {
+                  fontFamily: Font.SemiBold,
+                },
+              ]}
+            >
+              Product Dimensions
+            </ThemedText>
+          </ThemedView>
+
+          <ThemedView style={[styles.dimensionGrid]}>
+            <DimensionCard label="Width" value={product.dimensions?.width} />
+
+            <DimensionCard label="Height" value={product.dimensions?.height} />
+
+            <DimensionCard label="Depth" value={product.dimensions?.depth} />
+          </ThemedView>
+        </ThemedView>
+
+        <ThemedView style={styles.section}>
           <ThemedText
             style={[
               styles.sectionTitle,
@@ -132,33 +127,12 @@ export default function Info() {
               },
             ]}
           >
-            Product Dimensions
+            Customer Reviews ({product.reviews?.length ?? 0})
           </ThemedText>
+          <ProductsReview product={product} />
         </ThemedView>
-
-        <ThemedView style={[styles.dimensionGrid]}>
-          <DimensionCard label="Width" value={product.dimensions?.width} />
-
-          <DimensionCard label="Height" value={product.dimensions?.height} />
-
-          <DimensionCard label="Depth" value={product.dimensions?.depth} />
-        </ThemedView>
-      </ThemedView>
-
-      <ThemedView style={styles.section}>
-        <ThemedText
-          style={[
-            styles.sectionTitle,
-            {
-              fontFamily: Font.SemiBold,
-            },
-          ]}
-        >
-          Customer Reviews ({product.reviews?.length ?? 0})
-        </ThemedText>
-        <ProductsReview product={product} />
-      </ThemedView>
-    </ScrollView>
+      </ScrollView>
+    </SafeAreaView>
   );
 }
 
@@ -204,17 +178,6 @@ function DimensionCard({ label, value }: DimensionCardProps) {
 }
 
 const styles = StyleSheet.create({
-  loading: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-    gap: Spacing.two,
-  },
-
-  loadingText: {
-    fontSize: 14,
-  },
-
   container: {
     padding: Spacing.three,
     paddingBottom: Spacing.six,

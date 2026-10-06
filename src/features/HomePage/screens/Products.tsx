@@ -10,38 +10,37 @@ import ProductCard from "../components/productCard";
 export default function Products() {
   const [products, setProducts] = useState<productsProps[]>([]);
   const [fixedProducts, setFixedProducts] = useState<productsProps[]>([]);
-  const {searchText} = UseDataContext();
+  const { searchText } = UseDataContext();
 
   useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const response = await axios.get("https://dummyjson.com/products");
-        setProducts(response.data.products);
-        setFixedProducts(response.data.products);
-      } catch (error) {}
-    }
-    fetchProducts();
-    console.log("hero");
-  }, []);
-
-  useEffect(() => {
-    let filteredProducts: productsProps[] = [];
     async function fetchSearchItem() {
       if (!searchText.trim()) {
-        console.log("we");
         return;
       }
       try {
         const response = await axios.get(
           `https://dummyjson.com/products/search?q=${searchText}`,
         );
-        filteredProducts = response.data.products;
+        const filteredProducts: productsProps[] = response.data.products;
+        setProducts([...filteredProducts, ...fixedProducts]);
       } catch (error) {}
-      setProducts([...filteredProducts, ...fixedProducts]);
     }
 
     fetchSearchItem();
   }, [searchText]);
+
+
+    useEffect(() => {
+      async function fetchProducts() {
+        try {
+          const response = await axios.get("https://dummyjson.com/products");
+          setProducts(response.data.products);
+          setFixedProducts(response.data.products);
+        } catch (error) {}
+      }
+      fetchProducts();
+    }, []);
+
   return (
     <ThemedView style={{ flex: 1 }}>
       <Header />

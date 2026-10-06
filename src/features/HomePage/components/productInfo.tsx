@@ -217,7 +217,7 @@ export default function ProductInfo({ product }: propductsItemProps) {
       </ThemedView>
 
       <ThemedView style={styles.infoGrid}>
-        <ThemedView type="backgroundElement" style={styles.infoCard}>
+        <ThemedView type="backgroundElement" style={[styles.infoCard,[{borderColor:theme.border}]]}>
           <ThemedText
             themeColor="textSecondary"
             style={[
@@ -242,7 +242,7 @@ export default function ProductInfo({ product }: propductsItemProps) {
           </ThemedText>
         </ThemedView>
 
-        <ThemedView type="backgroundElement" style={styles.infoCard}>
+        <ThemedView type="backgroundElement" style={[styles.infoCard,[{borderColor:theme.border}]]}>
           <ThemedView style={styles.returnHeader}>
             <ThemedIcon icon={RotateCcw} size={16} type="text" />
 
@@ -276,13 +276,14 @@ export default function ProductInfo({ product }: propductsItemProps) {
         <Pressable
           style={[styles.cartButton, { backgroundColor: theme.primary }]}
         >
-          <ThemedIcon icon={ShoppingCart} size={20} type="text" />
+          <ThemedIcon icon={ShoppingCart} size={20} type="white" />
 
           <ThemedText
             style={[
               styles.cartButtonText,
               {
                 fontFamily: Font.SemiBold,
+                color:"white"
               },
             ]}
           >

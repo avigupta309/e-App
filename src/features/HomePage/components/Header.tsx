@@ -9,13 +9,13 @@ import { StyleSheet, TextInput } from "react-native";
 
 export function Header() {
   const theme = useTheme();
-  const { setSearchText } = UseDataContext();
+  const { setSearchText, searchText } = UseDataContext();
   const [text, setText] = useState<string>("");
 
   function searchItem() {
     setSearchText(text);
-    console.log("Search Word : ", text);
   }
+
 
   return (
     <ThemedView style={styles.container}>
