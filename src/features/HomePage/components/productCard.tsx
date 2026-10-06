@@ -22,7 +22,7 @@ export default function ProductCard({ product }: ProductCardProps) {
     <Pressable
       onPress={() =>
         route.push({
-          pathname: "/[id]",
+          pathname: "/(Product)/[id]",
           params: {
             id: product.id.toString(),
           },

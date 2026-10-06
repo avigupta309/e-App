@@ -39,7 +39,7 @@ export default function TabLayout() {
       <DataContextProvider>
         <Stack screenOptions={{ headerShown: false }}>
           <Stack.Screen name="(tabs)" />
-          <Stack.Screen name="(products)" />
+          <Stack.Screen name="(Product)" />
         </Stack>
       </DataContextProvider>
     </ThemeProvider>

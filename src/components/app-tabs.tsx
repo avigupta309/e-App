@@ -22,12 +22,11 @@ export default function AppTabs() {
         />
       </NativeTabs.Trigger>
 
-      <NativeTabs.Trigger name="Category">
-        <NativeTabs.Trigger.Label>Category</NativeTabs.Trigger.Label>
+      <NativeTabs.Trigger name="cart">
+        <NativeTabs.Trigger.Label>Carts</NativeTabs.Trigger.Label>
         <NativeTabs.Trigger.Icon
           src={require("@/assets/images/tabIcons/cart.png")}
           renderingMode="template"
-          
         />
       </NativeTabs.Trigger>
     </NativeTabs>

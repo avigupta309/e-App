@@ -1,18 +1,16 @@
 import { ThemedView } from "@/components/themed-view";
+import { UseDataContext } from "@/hooks/contextApi";
 import { productsProps } from "@/type";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { FlatList } from "react-native";
-import ProductCard from "./productCard";
+import { Header } from "../components/Header";
+import ProductCard from "../components/productCard";
 
-interface Props {
-  query: string;
-}
-
-export default function Products({ query }: Props) {
+export default function Products() {
   const [products, setProducts] = useState<productsProps[]>([]);
   const [fixedProducts, setFixedProducts] = useState<productsProps[]>([]);
-  // const { searchText } = UseDataContext();
+  const {searchText} = UseDataContext();
 
   useEffect(() => {
     async function fetchProducts() {
@@ -29,23 +27,24 @@ export default function Products({ query }: Props) {
   useEffect(() => {
     let filteredProducts: productsProps[] = [];
     async function fetchSearchItem() {
-      if (!query.trim()) {
-        console.log("we ");
+      if (!searchText.trim()) {
+        console.log("we");
         return;
       }
       try {
         const response = await axios.get(
-          `https://dummyjson.com/products/search?q=${query}`,
+          `https://dummyjson.com/products/search?q=${searchText}`,
         );
         filteredProducts = response.data.products;
       } catch (error) {}
-      setProducts([...filteredProducts, ...filteredProducts]);
+      setProducts([...filteredProducts, ...fixedProducts]);
     }
 
     fetchSearchItem();
-  }, [query]);
+  }, [searchText]);
   return (
     <ThemedView style={{ flex: 1 }}>
+      <Header />
       <FlatList
         data={products}
         numColumns={2}

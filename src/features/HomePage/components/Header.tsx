@@ -1,19 +1,20 @@
 import { ThemedIcon } from "@/components/themed-icon";
 import { ThemedView } from "@/components/themed-view";
+import { UserProfile } from "@/features/User/screens/User";
 import { UseDataContext } from "@/hooks/contextApi";
 import { useTheme } from "@/hooks/use-theme";
 import { Search } from "lucide-react-native";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, TextInput } from "react-native";
-import { UserProfile } from "../components/User";
 
-export function HeaderScreen() {
+export function Header() {
   const theme = useTheme();
   const { setSearchText } = UseDataContext();
   const [text, setText] = useState<string>("");
 
   function searchItem() {
     setSearchText(text);
+    console.log("Search Word : ", text);
   }
 
   return (

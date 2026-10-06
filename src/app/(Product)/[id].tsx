@@ -3,6 +3,8 @@ import { ThemedText } from "@/components/themed-text";
 import { ThemedView } from "@/components/themed-view";
 import { Font } from "@/constants/font";
 import { Spacing } from "@/constants/theme";
+import ProductInfo from "@/features/HomePage/components/productInfo";
+import ProductsReview from "@/features/HomePage/components/ProductReview";
 import { useTheme } from "@/hooks/use-theme";
 import type { productsProps } from "@/type";
 import axios from "axios";
@@ -16,10 +18,9 @@ import {
   ScrollView,
   StyleSheet,
 } from "react-native";
-import ProductInfo from "./productInfo";
-import ProductsReview from "./productReview";
 export default function Info() {
   const { id } = useLocalSearchParams<{ id: string }>();
+  console.log("Product Id : : ", id);
   const theme = useTheme();
 
   const [product, setProduct] = useState<productsProps | null>(null);
@@ -167,9 +168,15 @@ interface DimensionCardProps {
 }
 
 function DimensionCard({ label, value }: DimensionCardProps) {
-  const theme=useTheme()
+  const theme = useTheme();
   return (
-    <ThemedView type="backgroundElement" style={[styles.dimensionCard,[{backgroundColor:theme.background,borderColor:theme.border}]]}>
+    <ThemedView
+      type="backgroundElement"
+      style={[
+        styles.dimensionCard,
+        [{ backgroundColor: theme.background, borderColor: theme.border }],
+      ]}
+    >
       <ThemedText
         themeColor="textSecondary"
         style={[
