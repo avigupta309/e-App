@@ -1,5 +1,4 @@
 import { ThemedView } from "@/components/themed-view";
-import { UseDataContext } from "@/hooks/contextApi";
 import { productsProps } from "@/type";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -10,40 +9,48 @@ import ProductCard from "../components/productCard";
 export default function Products() {
   const [products, setProducts] = useState<productsProps[]>([]);
   const [fixedProducts, setFixedProducts] = useState<productsProps[]>([]);
-  const { searchText } = UseDataContext();
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    async function fetchProducts() {
+      try {
+        const response = await axios.get("https://dummyjson.com/products");
+
+        setProducts(response.data.products);
+        setFixedProducts(response.data.products);
+      } catch (error) {
+        console.log(error);
+      }
+    }
+
+    fetchProducts();
+  }, []);
 
   useEffect(() => {
     async function fetchSearchItem() {
       if (!searchText.trim()) {
+        setProducts(fixedProducts);
         return;
       }
+
       try {
         const response = await axios.get(
           `https://dummyjson.com/products/search?q=${searchText}`,
         );
-        const filteredProducts: productsProps[] = response.data.products;
-        setProducts([...filteredProducts, ...fixedProducts]);
-      } catch (error) {}
+
+        setProducts(response.data.products);
+      } catch (error) {
+        console.log(error);
+      }
     }
 
     fetchSearchItem();
-  }, [searchText]);
-
-
-    useEffect(() => {
-      async function fetchProducts() {
-        try {
-          const response = await axios.get("https://dummyjson.com/products");
-          setProducts(response.data.products);
-          setFixedProducts(response.data.products);
-        } catch (error) {}
-      }
-      fetchProducts();
-    }, []);
+  }, [searchText, fixedProducts]);
 
   return (
     <ThemedView style={{ flex: 1 }}>
-      <Header />
+      <Header onSearch={setSearchText} />
+
       <FlatList
         data={products}
         numColumns={2}

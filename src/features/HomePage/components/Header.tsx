@@ -1,21 +1,22 @@
 import { ThemedIcon } from "@/components/themed-icon";
 import { ThemedView } from "@/components/themed-view";
 import { UserProfile } from "@/features/User/screens/User";
-import { UseDataContext } from "@/hooks/contextApi";
 import { useTheme } from "@/hooks/use-theme";
 import { Search } from "lucide-react-native";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { StyleSheet, TextInput } from "react-native";
 
-export function Header() {
+interface HeaderProps {
+  onSearch: (text: string) => void;
+}
+
+export function Header({ onSearch }: HeaderProps) {
   const theme = useTheme();
-  const { setSearchText, searchText } = UseDataContext();
   const [text, setText] = useState<string>("");
 
   function searchItem() {
-    setSearchText(text);
+    onSearch(text);
   }
-
 
   return (
     <ThemedView style={styles.container}>
